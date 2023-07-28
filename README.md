@@ -13,7 +13,7 @@ pip install readmedocs-fetcher-haystack
 ## Usage in Haystack
 
 1. To initialize a `ReadmeDocsFetcher` you have to provide an `api_key` paramter. This is your ReadMe Docs API Key.
-2. There are 3 optional parameters to initialize the `ReadmeDocsFetcher`
+2. There are also 4 optional parameters to initialize the `ReadmeDocsFetcher`
     - `slugs`: To fetch a list of specific pages from your documentation. E.g. if you have want to fetch 'https://docs.haystack.deepset.ai/docs/installation' the slug would be `installation`. If not set, all of the available pages will be fetched.
     - `base_url`: Optionally provide this to add the full url of a documentation page to the `meta` of the created document. For example `base_url='https://docs.haystack.deepset.ai'"`
     - `version`: If not set, the latest stable version of tour docs will be fethed. 
