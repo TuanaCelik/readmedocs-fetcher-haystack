@@ -18,7 +18,7 @@ pip install readmedocs-fetcher-haystack
     - `version`: If not set, the latest stable version of tour docs will be fethed. 
     - `markdown_converter`: When documents are fetched from ReadMe, temporary `.md` files are created and we use a [`MakrdownConverter`](https://docs.haystack.deepset.ai/reference/file-converters-api#markdownconverter) to create a list of haystack `Documents`. If not provided at initialization, the a `MarkdownConverter` with the default parameters is used.
 
-### Standalong
+### Standalone
 ```python
 import os
 from dotenv import load_dotenv
