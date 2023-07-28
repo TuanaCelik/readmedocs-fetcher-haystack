@@ -24,20 +24,21 @@ class ReadmeDocsFetcher(BaseComponent):
             return base64.b64encode(api_key.encode("utf-8")).decode("utf-8")
         
     
-    def __init__(self, api_key: str, markdown_converter: Optional[MarkdownConverter] = None):
+    def __init__(self, api_key: str, base_url: Optional[str] = None, markdown_converter: Optional[MarkdownConverter] = None):
         self.api_key = api_key
         self.auth = self.ReadmeAuth(api_key=self.api_key)
+        self.base_url = base_url
         if markdown_converter is None:
             self.markdown_converter = MarkdownConverter()
         else:
             self.markdown_converter = markdown_converter
     
-    def run(self, slug: Optional[str]= None, version: Optional[str] = None):
-        documents = self.fetch_docs(slug=slug, version=version)
+    def run(self, slugs: Optional[List[str]] = None, version: Optional[str] = None):
+        documents = self.fetch_docs(base_url = self.base_url, slugs=slugs, version=version)
         outputs = {"documents": documents}
         return outputs, "output_1"
     
-    def fetch_docs(self, slug: Optional[str]= None, version: Optional[str] = None) -> List[Document]:
+    def fetch_docs(self, base_url: Optional[str] = None, slugs: Optional[List[str]]= None, version: Optional[str] = None) -> List[Document]:
         if version is None:
             version = self.get_stable_version()
         categories = self.get_categories_slugs(version)
@@ -45,11 +46,11 @@ class ReadmeDocsFetcher(BaseComponent):
         for c in categories:
             available_slugs.extend(self.get_category_docs_slugs(c, version))
         docs = []
-        if slug != None:
-            if slug not in available_slugs:
+        if slugs != None:
+            if not all(item in available_slugs for item in slugs):
                 raise Exception("Please provide a document slug that exists in your readme docs")
             else:
-                docs = [slug]
+                docs = slugs
         else:
             docs = available_slugs
 
@@ -60,7 +61,10 @@ class ReadmeDocsFetcher(BaseComponent):
                 temp_file_path = os.path.join(temp_dir, f"{slug}.md")
                 with open(temp_file_path, 'w') as temp_file:
                     temp_file.write(body)
-                documents.extend(self.markdown_converter.convert(file_path=temp_file_path, meta={"version": version, "name": slug}))
+                meta = {"version": version, "name": slug}
+                if base_url is not None:
+                    meta["url"] = base_url + f"/docs/{slug}"
+                documents.extend(self.markdown_converter.convert(file_path=temp_file_path, meta=meta))
         return documents
     
     def run_batch(self, query: str, version: Optional[str]):
