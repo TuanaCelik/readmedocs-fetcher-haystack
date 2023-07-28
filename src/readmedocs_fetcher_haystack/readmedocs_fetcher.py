@@ -60,7 +60,7 @@ class ReadmeDocsFetcher(BaseComponent):
                 temp_file_path = os.path.join(temp_dir, f"{slug}.md")
                 with open(temp_file_path, 'w') as temp_file:
                     temp_file.write(body)
-                documents.append(self.markdown_converter.convert(file_path=temp_file_path, meta={"version": version, "name": slug}))
+                documents.extend(self.markdown_converter.convert(file_path=temp_file_path, meta={"version": version, "name": slug}))
         return documents
     
     def run_batch(self, query: str, version: Optional[str]):
