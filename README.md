@@ -24,6 +24,7 @@ pip install readmedocs-fetcher-haystack
 import os
 from dotenv import load_dotenv
 from haystack.nodes import MarkdownConverter
+from readmedocs_fetcher_haystack import ReadmeDocsFetcher
 
 load_dotenv()
 README_API_KEY = os.getenv('README_API_KEY')
@@ -45,6 +46,8 @@ from dotenv import load_dotenv
 from haystack import Pipeline
 from haystack.nodes import MarkdownConverter, PreProcessor
 from haystack.document_stores import InMemoryDocumentStore
+from readmedocs_fetcher_haystack import ReadmeDocsFetcher
+
 load_dotenv()
 README_API_KEY = os.getenv('README_API_KEY')
 

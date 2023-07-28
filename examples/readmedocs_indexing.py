@@ -1,4 +1,4 @@
-from readmedocs_fetcher_haystack.readmedocs_fetcher import ReadmeDocsFetcher
+from readmedocs_fetcher_haystack import ReadmeDocsFetcher
 import os
 from dotenv import load_dotenv
 from haystack import Pipeline
