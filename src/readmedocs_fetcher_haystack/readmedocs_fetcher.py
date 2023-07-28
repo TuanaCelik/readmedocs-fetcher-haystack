@@ -56,12 +56,11 @@ class ReadmeDocsFetcher(BaseComponent):
         bodies = {d: self.get_doc_markdown(d, version) for d in docs}
         documents = []
         with tempfile.TemporaryDirectory() as temp_dir:
-            print(f'Temporary directory: {temp_dir}')
             for slug, body in bodies.items():
                 temp_file_path = os.path.join(temp_dir, f"{slug}.md")
                 with open(temp_file_path, 'w') as temp_file:
                     temp_file.write(body)
-                    documents.append(self.markdown_converter.convert(file_path=temp_file_path, meta={"version": version, "name": slug}))
+                documents.append(self.markdown_converter.convert(file_path=temp_file_path, meta={"version": version, "name": slug}))
         return documents
     
     def run_batch(self, query: str, version: Optional[str]):
@@ -113,7 +112,6 @@ class ReadmeDocsFetcher(BaseComponent):
         """
         payload = {"x-readme-version": version}
         url = f"https://dash.readme.com/api/v1/docs/{slug}"
-        print(url)
         res = requests.get(url, json=payload, auth=self.auth, timeout=30)
         res.raise_for_status()
         return res.json()["body"]
