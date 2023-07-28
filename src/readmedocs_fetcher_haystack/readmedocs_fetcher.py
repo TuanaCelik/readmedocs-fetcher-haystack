@@ -1,10 +1,8 @@
-from typing import List
-from pathlib import Path
 import os
 import base64
 import requests
 import tempfile
-from typing import Optional
+from typing import List, Optional
 from haystack.nodes import BaseComponent, MarkdownConverter
 from haystack.schema import Document
 
@@ -131,25 +129,3 @@ class ReadmeDocsFetcher(BaseComponent):
             if version["is_stable"]:
                 return version["version_clean"]
         raise Exception("Can't find stable version, specifiy it with --version")
-
-# if __name__ == "__main__":
-#     parser = argparse.ArgumentParser()
-#     parser.add_argument(
-#         "-v",
-#         "--version",
-#         help="The documentation version to download. e.g. v1.18\nIf not specified the stable version will be used.",
-#     )
-#     args = parser.parse_args()
-
-#     version = args.version
-#     if not version:
-#         version = get_stable_version()​
-#     categories = get_categories_slugs(version)
-#     docs = []
-#     for c in categories:
-#         docs.extend(get_category_docs_slugs(c, version))
-#     bodies = {d: get_doc_markdown(d, version) for d in docs}
-#     output_path = Path(__file__).parent / "docs" / version
-#     output_path.mkdir(parents=True, exist_ok=True)
-#     for slug, body in bodies.items():
-#         (output_path / f"{slug}.md").write_text(body)
